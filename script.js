@@ -22,59 +22,17 @@ main.appendChild(tetris);
  }
 
  let x = 5, y =15;
- let mainArr = [  
-               //   многомерный массив
-    //палка
-    [
-        [0,1],
-        [0,2],
-        [0,3]
-    ],
-    //квадрат
-    [
-        [1,0],
-        [0,1],
-        [1,1] 
-    ],
-    //буква L 
-    [
-        [1,0],
-        [0,1],
-        [0,2] 
-    ],
-    //зеркальная буква L 
-    [
-        [1,0],
-        [1,1],
-        [1,2] 
-    ],
-    //молния вправо
-    [
-        [1,0],
-        [-1,1],
-        [0,1] 
-    ],
-    //молния влево
-    [
-        [1,0],
-        [1,1],
-        [2,1] 
-    ],
-    //деталь лего
-    [
-        [1,0],
-        [2,0],
-        [1,1] 
-    ],
-
- ]
+ let mainArr=[[[0,1],[0,2],[0,3],[[-1,1],[0,0],[1,-1],[2,-2]],[[1,-1],[0,0],[-1,1],[-2,2]],[[-1,1],[0,0],[1,-1],[2,-2]],[[1,-1],[0,0],[-1,1],[-2,2]],],[[1,0],[0,1],[1,1],[[0,0],[0,0],[0,0],[0,0]],[[0,0],[0,0],[0,0],[0,0]],[[0,0],[0,0],[0,0],[0,0]],[[0,0],[0,0],[0,0],[0,0]],],[[1,0],[0,1],[0,2],[[0,0],[-1,1],[1,0],[2,-1]],[[1,-1],[1,-1],[-1,0],[-1,0]],[[-1,0],[0,-1],[2,-2],[1,-1]],[[0,-1],[0,-1],[-2,0],[-2,0]],],[[1,0],[1,1],[1,2],[[0,0],[0,0],[1,-1],[-1,-1]],[[0,-1],[-1,0],[-2,1],[1,0]],[[2,0],[0,0],[1,-1],[1,-1]],[[-2,0],[1,-1],[0,0],[-1,1]],],[[1,0],[-1,1],[0,1],[[0,-1],[-1,0],[2,-1],[1,0]],[[0,0],[1,-1],[-2,0],[-1,-1]],[[0,-1],[-1,0],[2,-1],[1,0]],[[0,0],[1,-1],[-2,0],[-1,-1]]],[[1,0],[1,1],[2,1],[[2,-1],[0,0],[1,-1],[-1,0]],[[-2,0],[0,-1],[-1,0],[1,-1]],[[2,-1],[0,0],[1,-1],[-1,0]],[[-2,0],[0,-1],[-1,0],[1,-1]],],[[1,0],[2,0],[1,1],[[1,-1],[0,0],[0,0],[0,0]],[[0,0],[-1,0],[-1,0],[1,-1]],[[1,-1],[1,-1],[1,-1],[0,0]],[[-2,0],[0,-1],[0,-1],[-1,-1]]],]
 let currentFigure = 0;
 let figureBody = 0;
+let rotate = 1;
 
  function create() {
      function getRandom() {
          return Math.round(Math.random()*(mainArr.length-1))
      }
+     rotate = 1;
+
      currentFigure = getRandom();
 
      figureBody = [
@@ -174,6 +132,35 @@ window.addEventListener('keydown', function(e) {
         getNewState(1);
     } else if (e.keyCode == 40) {
         move();
+    } else if (e.keyCode == 38) {
+        flag = true;
+
+        let figureNew = [
+            document.querySelector(`[posX = "${+coordinats1[0]+ mainArr[currentFigure][rotate+2][0][0]}"][posY = "${+coordinats1[1]+ mainArr[currentFigure][rotate+2][0][1]}"]`),
+            document.querySelector(`[posX = "${+coordinats2[0]+ mainArr[currentFigure][rotate+2][1][0]}"][posY = "${+coordinats2[1]+ mainArr[currentFigure][rotate+2][1][1]}"]`),
+            document.querySelector(`[posX = "${+coordinats3[0]+ mainArr[currentFigure][rotate+2][2][0]}"][posY = "${+coordinats3[1]+ mainArr[currentFigure][rotate+2][2][1]}"]`),
+            document.querySelector(`[posX = "${+coordinats4 [0]+ mainArr[currentFigure][rotate+2][3][0]}"][posY ="${+coordinats4[1]+ mainArr[currentFigure][rotate+2][3][1]}"]`),
+        ];
+        for (let i=0; i<figureNew.length; i++) {
+            if (!figureNew[i] || figureNew[i].classList.contains('set')) {
+                flag =false; 
+            }
+        }
+        if (flag == true) {
+            for (let i=0; i<figureBody.length; i++) { 
+                figureBody[i].classList.remove('figure');
+            } 
+            figureBody = figureNew;
+
+            for (let i=0; i<figureBody.length; i++) {
+                figureBody[i].classList.add('figure');
+            } 
+            if (rotate < 4) {
+                rotate++;
+            } else {
+                rotate =1; 
+            }
+        }
     }
 })
- 
+  
