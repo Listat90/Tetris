@@ -8,7 +8,7 @@ modal.addEventListener('click', function(e){
      } else if(e.target.classList.contains('normal')) {
         speed = 500;
      } else if(e.target.classList.contains('hard')) {
-        speed = 200;
+        speed = 100;
      }
 
      if (e.target.classList.contains('button')){
